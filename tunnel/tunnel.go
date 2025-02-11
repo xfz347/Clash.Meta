@@ -413,6 +413,27 @@ func resolveMetadata(metadata *C.Metadata) (proxy C.Proxy, rule C.Rule, err erro
 	return
 }
 
+
+func findPackageName(metadata *C.Metadata) {
+	if !features.Android && !features.OHOS {
+		uid, path, err := P.FindProcessName(metadata.NetWork.String(), metadata.SrcIP, int(metadata.SrcPort))
+		if err != nil {
+			log.Debugln("[Process] find process %s error: %v", metadata.String(), err)
+		} else {
+			metadata.Process = filepath.Base(path)
+			metadata.ProcessPath = path
+			metadata.Uid = uid
+		}
+	} else {
+		pkg, err := P.FindPackageName(metadata)
+		if err != nil {
+			log.Debugln("[Process] find process %s error: %v", metadata.String(), err)
+		} else {
+			metadata.Process = pkg
+		}
+	}
+}
+
 // processUDP starts a loop to handle udp packet
 func processUDP(queue chan C.PacketAdapter) {
 	for conn := range queue {

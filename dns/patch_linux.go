@@ -1,4 +1,4 @@
-//go:build android || ohos
+//go:build ohos
 
 package dns
 
