@@ -1,4 +1,4 @@
-//go:build android || ohos
+//go:build ohos
 
 package dns
 
@@ -9,7 +9,12 @@ import (
 var systemResolver []dnsClient
 
 func FlushCacheWithDefaultResolver() {
-	resolver.ClearCache()
+	if r := resolver.DefaultResolver; r != nil {
+		r.ClearCache()
+	}
+	if r := resolver.SystemResolver; r != nil {
+		r.ClearCache()
+	}
 	resolver.ResetConnection()
 }
 

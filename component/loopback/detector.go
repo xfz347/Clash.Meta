@@ -17,7 +17,7 @@ import (
 var disableLoopBackDetector, _ = strconv.ParseBool(os.Getenv("DISABLE_LOOPBACK_DETECTOR"))
 
 func init() {
-	if features.Android {
+	if features.Android && features.OHOS {
 		disableLoopBackDetector = true
 	}
 }
